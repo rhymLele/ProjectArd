@@ -58,9 +58,6 @@ public class CreateNoteActivity extends AppCompatActivity {
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent=new Intent(CreateNoteActivity.this, MainActivity.class);
-//                   setResult(RESULT_OK,intent);
-//                   finish();
                 onBackPressed();
             }
         });
@@ -98,7 +95,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         note.setSubtitle(inputNoteSubTitle.getText().toString());
         note.setDateTime(textDateTime.getText().toString());
         if(alreadyAvailableNote!=null){
-            note.setId(alreadyAvailableNote.getId());
+            note.setId(alreadyAvailableNote.getId() );
         }
         @SuppressLint("StaticFieldLeak")
         class SaveNoteTask extends AsyncTask<Void,Void,Void>{
@@ -113,9 +110,13 @@ public class CreateNoteActivity extends AppCompatActivity {
             protected void onPostExecute(Void unused) {
 
                 super.onPostExecute(unused);
-                Intent intent=new Intent();
+                Intent intent=new Intent(getApplicationContext(),MainActivity.class);
                 setResult(RESULT_OK,intent);
+                startActivity(intent);
                 finish();
+//                Intent intent=new Intent();
+//                setResult(RESULT_OK,intent);
+//                finish();
             }
         }
         new SaveNoteTask().execute();
