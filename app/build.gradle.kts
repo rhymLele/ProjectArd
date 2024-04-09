@@ -32,7 +32,17 @@ android {
 }
 
 dependencies {
+    //room for database
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.activity:activity:1.8.0")
+    annotationProcessor("androidx.room:room-compiler:2.6.1")
+    //scalable size unit
+    implementation ("com.intuit.sdp:sdp-android:1.1.1")
+    implementation ("com.intuit.ssp:ssp-android:1.1.1")
 
+    //rounded image
+    implementation ("com.makeramen:roundedimageview:2.3.0")
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)

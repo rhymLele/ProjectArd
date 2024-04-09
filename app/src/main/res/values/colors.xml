@@ -2,4 +2,21 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#292929</color>
+    <color name="colorPrimaryDark">#292929</color>
+    <color name="colorAccent">#FDBE3B</color>
+    <color name="colorSearchIcon">#DBDBDB</color>
+    <color name="colorTextHint">#7b7b7b</color>
+    <color name="colorQuickActionBackground">#2f2d2e</color>
+    <color name="colorIcon">#a4a4a4</color>
+    <color name="colorTextSubtitle">#CECECE</color>
+    <color name="colorDefaultNoteColor">#333333</color>
+    <color name="colorMiscellaneousBackground">#fafafa</color>
+    <color name="colorNoteColor2">#fdbe3b</color>
+    <color name="colorNoteColor3">#ff4842</color>
+    <color name="colorNoteColor4">#3a52fc</color>
+    <color name="colorNoteColor5">#000000</color>
+    <color name="colorDelete">#ff4842</color>
+    <color name="colorSearchBackground">#333333</color>
+
 </resources>
