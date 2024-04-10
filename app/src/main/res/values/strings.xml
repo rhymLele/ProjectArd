@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">ProjectArd</string>
     <string name="search">Search</string>
+    <string name="miscellaneous">Miscellaneous</string>
+    <string name="pick_color">pick color</string>
 </resources>

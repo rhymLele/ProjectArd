@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResult;
@@ -26,6 +27,7 @@ import com.example.projectard.adapters.NoteAdapter;
 import com.example.projectard.database.NoteDatabases;
 import com.example.projectard.entity.Note;
 import com.example.projectard.listeners.NoteListener;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
     private List<Note> noteList;
     private NoteAdapter noteAdapter;
     private int noteClickedPosition=-1;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,8 +50,10 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
         Log.d("Create","okls");
         initUI();
         HanldeCLick();
+
 //        if(noteAdapter.getItemCount()==0)
         getNote(REQUEST_CODE_SHOW_NOTE);
+
     }
 
     @Override
@@ -131,4 +137,5 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
         intent.putExtra("note",note);
         startActivityForResult(intent,REQUEST_CODE_UPDATE_NOTE);
     }
+
 }

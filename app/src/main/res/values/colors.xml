@@ -11,7 +11,7 @@
     <color name="colorIcon">#a4a4a4</color>
     <color name="colorTextSubtitle">#CECECE</color>
     <color name="colorDefaultNoteColor">#333333</color>
-    <color name="colorMiscellaneousBackground">#fafafa</color>
+    <color name="colorMiscellaneousBackground">#333333</color>
     <color name="colorNoteColor2">#fdbe3b</color>
     <color name="colorNoteColor3">#ff4842</color>
     <color name="colorNoteColor4">#3a52fc</color>

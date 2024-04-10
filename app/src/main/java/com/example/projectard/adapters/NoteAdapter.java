@@ -1,5 +1,7 @@
 package com.example.projectard.adapters;
 
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,14 +63,22 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
              textSubtitle=itemView.findViewById(R.id.item_textSubtitle);
              textDateTime=itemView.findViewById(R.id.item_textDateTime);
              layoutNote=itemView.findViewById(R.id.layoutNote);
+
         }
         void setNote(Note note){
-        textTitle.setText(note.getTitle());
-        if(note.getSubtitle().trim().isEmpty())
-        {
-            textSubtitle.setVisibility(View.GONE);
-        }else textSubtitle.setText(note.getSubtitle());
-        textDateTime.setText(note.getDateTime());
+            textTitle.setText(note.getTitle());
+            if(note.getSubtitle().trim().isEmpty())
+            {
+                textSubtitle.setVisibility(View.GONE);
+            }else textSubtitle.setText(note.getSubtitle());
+            textDateTime.setText(note.getDateTime());
+
+            GradientDrawable gradientDrawable = (GradientDrawable) layoutNote.getBackground();
+            if(note.getColor() != null){
+                gradientDrawable.setColor(Color.parseColor(note.getColor()));
+            }else{
+                gradientDrawable.setColor(Color.parseColor("#333333"));
+            }
         }
     }
 }
