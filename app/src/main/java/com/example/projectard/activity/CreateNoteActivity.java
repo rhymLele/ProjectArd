@@ -90,6 +90,7 @@ public class CreateNoteActivity extends AppCompatActivity {
     }
 
     private void HanldeCLick() {
+        deleteimageurl();
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,7 +133,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         note.setNoteText(inputNoteText.getText().toString());
         note.setSubtitle(inputNoteSubTitle.getText().toString());
         note.setDateTime(textDateTime.getText().toString());
-        if(imageUri!=null) note.setImagePath(imageUri.toString());
+        if(imageUri!=null&&imageNote.getVisibility()==View.VISIBLE) note.setImagePath(imageUri.toString());
         if(alreadyAvailableNote!=null){
             note.setId(alreadyAvailableNote.getId() );
         }
@@ -164,6 +165,25 @@ public class CreateNoteActivity extends AppCompatActivity {
             }
         }
         new SaveNoteTask().execute();
+    }
+    void deleteimageurl(){
+        textWebURL.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                textWebURL.setText("");
+                layoutWebURL.setVisibility(View.GONE);
+                return false;
+            }
+        });
+        imageNote.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                imageUri=null;
+                imageNote.setImageURI(null);
+                imageNote.setVisibility(View.GONE);
+                return false;
+            }
+        });
     }
     private ActivityResultLauncher<PickVisualMediaRequest> launcher=registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), new ActivityResultCallback<Uri>() {
         @Override
