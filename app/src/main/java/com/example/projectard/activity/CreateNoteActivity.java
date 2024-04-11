@@ -2,8 +2,10 @@ package com.example.projectard.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -14,11 +16,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.bumptech.glide.Glide;
 import com.example.projectard.R;
 import com.example.projectard.database.NoteDatabases;
 import com.example.projectard.entity.Note;
@@ -29,13 +36,15 @@ import java.util.Date;
 import java.util.Locale;
 
 public class CreateNoteActivity extends AppCompatActivity {
-    private ImageView imageBack,imageSave;
+    private ImageView imageBack,imageSave,imageNote;
     private EditText inputNoteTitle,inputNoteSubTitle,inputNoteText;
     private TextView textDateTime;
     private Note alreadyAvailableNote;
 
     private View viewSubtitleIndicator;
     private String selectedNoteColor;
+    private  Uri imageUri;
+    private String SelectedImagePath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +73,10 @@ public class CreateNoteActivity extends AppCompatActivity {
         inputNoteText.setText(alreadyAvailableNote.getNoteText());
         inputNoteSubTitle.setText(alreadyAvailableNote.getSubtitle());
         textDateTime.setText(alreadyAvailableNote.getDateTime());
+        if(alreadyAvailableNote.getImagePath()!=null){
+            imageNote.setImageURI(Uri.parse(alreadyAvailableNote.getImagePath()));
+            imageNote.setVisibility(View.VISIBLE);
+        }
     }
 
     private void HanldeCLick() {
@@ -89,6 +102,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         textDateTime.setText(new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm a"
                 , Locale.getDefault()).format(new Date()));
         imageSave=findViewById(R.id.imageSave);
+        imageNote=findViewById(R.id.imageNoteee);
 
     }
     private void SaveNote(){
@@ -106,6 +120,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         note.setNoteText(inputNoteText.getText().toString());
         note.setSubtitle(inputNoteSubTitle.getText().toString());
         note.setDateTime(textDateTime.getText().toString());
+        if(imageUri!=null) note.setImagePath(imageUri.toString());
         if(alreadyAvailableNote!=null){
             note.setId(alreadyAvailableNote.getId() );
         }
@@ -136,7 +151,24 @@ public class CreateNoteActivity extends AppCompatActivity {
         }
         new SaveNoteTask().execute();
     }
-
+    private ActivityResultLauncher<PickVisualMediaRequest> launcher=registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), new ActivityResultCallback<Uri>() {
+        @Override
+        public void onActivityResult(Uri o) {
+            if(o==null)
+            {
+                Toast.makeText(CreateNoteActivity.this,"no",Toast.LENGTH_SHORT).show();
+            }else
+            {
+                imageUri = o;
+                int flag = Intent.FLAG_GRANT_READ_URI_PERMISSION;
+                getApplicationContext().getContentResolver().takePersistableUriPermission(imageUri, flag);
+                imageNote.setVisibility(View.VISIBLE);
+                imageNote.setImageURI(o);
+                Toast.makeText(CreateNoteActivity.this,"no "+SelectedImagePath,Toast.LENGTH_SHORT).show();
+//                Glide.with(getApplicationContext()).load(o).into(imageNote);
+            }
+        }
+    });
     private void initMiscellaneous(){
         final LinearLayout layoutMiscellaneous = findViewById(R.id.layoutMiscellaneous);
         final BottomSheetBehavior<LinearLayout> bottomSBH = BottomSheetBehavior.from(layoutMiscellaneous);
@@ -219,6 +251,14 @@ public class CreateNoteActivity extends AppCompatActivity {
                 imgV4.setImageResource(0);
                 imgV5.setImageResource(R.drawable.ic_done);
                 setSubtitleIndicatorColor();
+            }
+        });
+        layoutMiscellaneous.findViewById(R.id.layoutAddImage).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launcher.launch(new PickVisualMediaRequest.Builder()
+                        .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                        .build());
             }
         });
     }

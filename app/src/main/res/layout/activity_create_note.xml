@@ -92,6 +92,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/viewSubtitleIndicator"
                 app:layout_constraintTop_toBottomOf="@id/textDateTime"/>
+
+
             <View
                 android:id="@+id/viewSubtitleIndicator"
                 android:layout_width="@dimen/_5sdp"
@@ -101,6 +103,16 @@
                 app:layout_constraintBottom_toBottomOf="@id/inputNoteSubTitle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/inputNoteSubTitle"/>
+            <ImageView
+                android:id="@+id/imageNoteee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:visibility="gone"
+                android:contentDescription="@string/app_name"
+                app:layout_constraintTop_toBottomOf="@id/inputNoteSubTitle"/>
             <EditText
                 android:id="@+id/inputNote"
                 android:layout_width="match_parent"
@@ -121,7 +133,7 @@
                 android:textColorHint="@color/colorTextHint"
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/inputNoteSubTitle"
+                app:layout_constraintTop_toBottomOf="@id/imageNoteee"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
