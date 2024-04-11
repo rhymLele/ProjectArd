@@ -4,11 +4,15 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,6 +24,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -34,17 +39,20 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 public class CreateNoteActivity extends AppCompatActivity {
     private ImageView imageBack,imageSave,imageNote;
     private EditText inputNoteTitle,inputNoteSubTitle,inputNoteText;
-    private TextView textDateTime;
+    private TextView textDateTime,textWebURL;
+    LinearLayout layoutWebURL;
     private Note alreadyAvailableNote;
 
     private View viewSubtitleIndicator;
     private String selectedNoteColor;
     private  Uri imageUri;
     private String SelectedImagePath;
+    private AlertDialog dialogAddUrl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +84,8 @@ public class CreateNoteActivity extends AppCompatActivity {
         if(alreadyAvailableNote.getImagePath()!=null){
             imageNote.setImageURI(Uri.parse(alreadyAvailableNote.getImagePath()));
             imageNote.setVisibility(View.VISIBLE);
+        }if(layoutWebURL.getVisibility()==View.VISIBLE){
+            textWebURL.setText(alreadyAvailableNote.getWebLink());
         }
     }
 
@@ -103,6 +113,8 @@ public class CreateNoteActivity extends AppCompatActivity {
                 , Locale.getDefault()).format(new Date()));
         imageSave=findViewById(R.id.imageSave);
         imageNote=findViewById(R.id.imageNoteee);
+        textWebURL=findViewById(R.id.textWebURL);
+        layoutWebURL=findViewById(R.id.layoutWebURLL);
 
     }
     private void SaveNote(){
@@ -126,7 +138,9 @@ public class CreateNoteActivity extends AppCompatActivity {
         }
 
         note.setColor(selectedNoteColor);
-
+        if(layoutWebURL.getVisibility()==View.VISIBLE){
+            note.setWebLink(textWebURL.getText().toString());
+        }
         @SuppressLint("StaticFieldLeak")
         class SaveNoteTask extends AsyncTask<Void,Void,Void>{
 
@@ -261,10 +275,52 @@ public class CreateNoteActivity extends AppCompatActivity {
                         .build());
             }
         });
+        layoutMiscellaneous.findViewById(R.id.layoutAddUrl).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               bottomSBH.setState(BottomSheetBehavior.STATE_COLLAPSED);
+               showAddUrlDialog();
+            }
+        });
     }
 
     private void setSubtitleIndicatorColor(){
         GradientDrawable gradientD = (GradientDrawable) viewSubtitleIndicator.getBackground();
         gradientD.setColor(Color.parseColor(selectedNoteColor));
+    }
+    private void showAddUrlDialog(){
+        if(dialogAddUrl==null){
+            AlertDialog.Builder builder=new AlertDialog.Builder(CreateNoteActivity.this);
+            View view= LayoutInflater.from(this).inflate(R.layout.layout_add_url,(ViewGroup) findViewById(R.id.layoutAddUrlContainer));
+            builder.setView(view);
+            dialogAddUrl= builder.create();
+            if(dialogAddUrl.getWindow()!=null)
+            {
+                dialogAddUrl.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+
+            }
+            final EditText inputURL=view.findViewById(R.id.inputURL);
+            inputURL.requestFocus();
+            view.findViewById(R.id.textAdd).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(inputURL.getText().toString().trim().isEmpty()){
+                        Toast.makeText(CreateNoteActivity.this,"Enter URl",Toast.LENGTH_SHORT).show();
+                    }else if(!Patterns.WEB_URL.matcher(inputURL.getText().toString()).matches()){
+                         Toast.makeText(CreateNoteActivity.this,"Enter valid URL",Toast.LENGTH_SHORT).show();
+                    }else {
+                        textWebURL.setText(inputURL.getText().toString());
+                        layoutWebURL.setVisibility(View.VISIBLE);
+                        dialogAddUrl.dismiss();
+                    }
+                }
+            });
+            view.findViewById(R.id.textCancel).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogAddUrl.dismiss();
+                }
+            });
+        }dialogAddUrl.show();
     }
 }

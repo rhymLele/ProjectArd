@@ -112,7 +112,31 @@
                 android:layout_marginEnd="@dimen/_12sdp"
                 android:visibility="gone"
                 android:contentDescription="@string/app_name"
-                app:layout_constraintTop_toBottomOf="@id/inputNoteSubTitle"/>
+                app:layout_constraintTop_toBottomOf="@id/inputNoteSubTitle"
+                tools:ignore="MissingConstraints" />
+            <LinearLayout
+                android:id="@+id/layoutWebURLL"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/imageNoteee"
+                >
+                <TextView
+                    android:id="@+id/textWebURL"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:autoLink="web"
+                    android:fontFamily="@font/uregular"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/_13ssp"/>
+            </LinearLayout>
             <EditText
                 android:id="@+id/inputNote"
                 android:layout_width="match_parent"
@@ -133,7 +157,7 @@
                 android:textColorHint="@color/colorTextHint"
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/imageNoteee"
+                app:layout_constraintTop_toBottomOf="@id/layoutWebURLL"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
