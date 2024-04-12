@@ -1,11 +1,17 @@
 package com.example.projectard.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -13,6 +19,7 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -27,12 +34,14 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.Manifest;
 import com.example.projectard.R;
 import com.example.projectard.adapters.NoteAdapter;
 import com.example.projectard.database.NoteDatabases;
@@ -43,12 +52,13 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements NoteListener {
     public static final int REQUEST_CODE_ADD_NOTE=1;
     public static final int REQUEST_CODE_UPDATE_NOTE=2;
     public static final int REQUEST_CODE_SHOW_NOTE=3;
-    private ImageView imageAddNoteMain;
+    private ImageView imageAddNoteMain,mic;
     private RecyclerView noteRecyclerView;
     private List<Note> noteList;
     private NoteAdapter noteAdapter;
@@ -56,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
     ConnectionReceiver receiver;
     IntentFilter intentFilter;
     EditText inputSearch;
+    private static final int SPEECH_REQUEST_CODE = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
         intentFilter = new IntentFilter("com.example.listview2023.SOME_ACTION");
         intentFilter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-        intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+//        intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
         registerReceiver(receiver, intentFilter);
 //        if(noteAdapter.getItemCount()==0)
         getNote(REQUEST_CODE_SHOW_NOTE, false);
@@ -86,13 +97,32 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
 //        getNote(REQUEST_CODE_SHOW_NOTE);
 
     }
-
+    private final ActivityResultLauncher<String> allowPermission =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    Toast.makeText(MainActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+                }
+            });
+    // Create an intent that can start the Speech Recognizer activity
+    private void displaySpeechRecognizer() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        startActivityForResult(intent, SPEECH_REQUEST_CODE);
+    }
+    @SuppressLint("ClickableViewAccessibility")
     private void HanldeCLick() {
         imageAddNoteMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_ADD_NOTE);
+            }
+        });
+        mic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
         inputSearch.addTextChangedListener(new TextWatcher() {
@@ -158,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
         noteList=new ArrayList<>();
         noteAdapter=new NoteAdapter(noteList,this);
         noteRecyclerView.setAdapter(noteAdapter);
+        mic=findViewById(R.id.mic_touch);
     }
 
     @Override
@@ -172,6 +203,13 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
            {
                getNote(REQUEST_CODE_UPDATE_NOTE, data.getBooleanExtra("isNoteDeleted",false));
            }
+        }
+        if (requestCode == SPEECH_REQUEST_CODE && resultCode == RESULT_OK) {
+            List<String> results = data.getStringArrayListExtra(
+                    RecognizerIntent.EXTRA_RESULTS);
+            String spokenText = results.get(0);
+            Log.d("fuckj","fk");
+            inputSearch.setText(spokenText);
         }
     }
 

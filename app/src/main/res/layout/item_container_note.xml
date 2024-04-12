@@ -25,7 +25,7 @@
         android:layout_marginEnd="@dimen/_8sdp"
         android:fontFamily="@font/ubold"
         android:includeFontPadding="false"
-        android:textColor="@color/white"
+        android:textColor="@color/colorIcon"
         android:textSize="@dimen/_25ssp"/>
     <TextView
         android:id="@+id/item_textSubtitle"
@@ -37,7 +37,7 @@
         android:layout_marginBottom="@dimen/_4sdp"
         android:fontFamily="@font/uregular"
         android:includeFontPadding="false"
-        android:textColor="@color/white"
+        android:textColor="@color/colorIcon"
         android:textSize="@dimen/_12ssp"/>
     <TextView
         android:id="@+id/item_textDateTime"
@@ -48,7 +48,7 @@
         android:layout_marginBottom="@dimen/_4sdp"
         android:fontFamily="@font/uregular"
         android:includeFontPadding="false"
-        android:textColor="@color/white"
+        android:textColor="@color/colorIcon"
         android:textSize="@dimen/_7ssp"/>
 
 </LinearLayout>

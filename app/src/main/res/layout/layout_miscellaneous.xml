@@ -18,7 +18,7 @@
         android:gravity="center"
         android:includeFontPadding="false"
         android:text="@string/miscellaneous"
-        android:textColor="@color/white"
+        android:textColor="@color/colorDefaultNoteColor"
         android:textSize="@dimen/_13ssp"
         />
     <LinearLayout
@@ -135,7 +135,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/ubold"
             android:text="@string/pick_color"
-            android:textColor="@color/white"
+            android:textColor="@color/colorDefaultNoteColor"
             android:textSize="@dimen/_13ssp"
             />
     </LinearLayout>
@@ -152,14 +152,14 @@
             android:layout_height="@dimen/_22sdp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_image"
-            app:tint="@color/colorIcon"/>
+            app:tint="@color/colorDefaultNoteColor"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:fontFamily="@font/umedium"
             android:includeFontPadding="false"
-            android:textColor="@color/colorIcon"
+            android:textColor="@color/colorDefaultNoteColor"
             android:textSize="@dimen/_12ssp"
             android:text="Add Image"/>
 
@@ -177,14 +177,14 @@
             android:layout_height="@dimen/_22sdp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_web_link"
-            app:tint="@color/colorIcon"/>
+            app:tint="@color/colorDefaultNoteColor"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:fontFamily="@font/umedium"
             android:includeFontPadding="false"
-            android:textColor="@color/colorIcon"
+            android:textColor="@color/colorDefaultNoteColor"
             android:textSize="@dimen/_12ssp"
             android:text="Add Url"/>
 

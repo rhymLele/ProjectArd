@@ -31,7 +31,7 @@
         android:fontFamily="@font/ubold"
         android:includeFontPadding="false"
         android:text="@string/delete_note"
-        android:textColor="@color/white"
+        android:textColor="@color/colorDefaultNoteColor"
         android:textSize="@dimen/_14ssp"
         app:layout_constraintBottom_toBottomOf="@id/imageDeleteNote"
         app:layout_constraintEnd_toEndOf="parent"

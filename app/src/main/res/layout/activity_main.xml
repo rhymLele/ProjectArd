@@ -26,7 +26,7 @@
             android:layout_height="@dimen/_20sdp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_search"
-            app:tint="@color/colorSearchIcon"/>
+            app:tint="@color/colorDefaultNoteColor"/>
         <EditText
             android:id="@+id/inputSearch"
             android:layout_width="@dimen/_220sdp"
@@ -38,7 +38,7 @@
             android:imeOptions="actionDone"
             android:includeFontPadding="false"
             android:inputType="text"
-            android:textColorHint="@color/colorTextHint"
+            android:textColorHint="@color/colorDefaultNoteColor"
             android:textSize="@dimen/_13ssp"
             android:textColor="@color/white"/>
         <ImageView
@@ -47,7 +47,7 @@
             android:layout_height="@dimen/_20sdp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_mic"
-            app:tint="@color/colorSearchIcon"/>
+            app:tint="@color/colorDefaultNoteColor"/>
 
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
@@ -68,7 +68,7 @@
         android:id="@+id/layoutQuickActions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorQuickActionBackground"
+        android:background="@color/colorIcon"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="@dimen/_15sdp"
@@ -83,7 +83,7 @@
         android:contentDescription="@string/app_name"
         android:padding="@dimen/_5sdp"
         android:src="@drawable/ic_add"
-        app:tint="@color/colorPrimary"
+        app:tint="@color/colorDefaultNoteColor"
         app:layout_constraintBottom_toTopOf="@id/layoutQuickActions"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/layoutQuickActions"/>
