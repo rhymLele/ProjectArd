@@ -26,7 +26,7 @@
         android:fontFamily="@font/ubold"
         android:includeFontPadding="false"
         android:textColor="@color/white"
-        android:textSize="@dimen/_13ssp"/>
+        android:textSize="@dimen/_25ssp"/>
     <TextView
         android:id="@+id/item_textSubtitle"
         android:layout_width="match_parent"

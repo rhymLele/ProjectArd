@@ -2,18 +2,25 @@ package com.example.projectard.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -141,6 +148,41 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
         intent.putExtra("isViewOrUpdate",true);
         intent.putExtra("note",note);
         startActivityForResult(intent,REQUEST_CODE_UPDATE_NOTE);
+    } public static void sort_type(List<Note> list,int option) {
+
+        if(option==1)
+        {
+            list.sort((o1, o2)
+                    -> o1.getTitle().compareTo(
+                    o2.getTitle()));
+        }else if(option==2)
+        {
+            list.sort((o1, o2)
+                    -> o1.getDateTime().compareTo(
+                    o2.getDateTime()));
+        }
+
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId()==R.id.mnuSortTitle)
+        {
+            sort_type(noteList,2);
+            noteAdapter.notifyDataSetChanged();
+            Toast.makeText(this,"Sort by name",Toast.LENGTH_SHORT).show();
+        }else if(item.getItemId()==R.id.mnuSortDate)
+        {
+            sort_type(noteList,1);
+            noteAdapter.notifyDataSetChanged();
+            Toast.makeText(this,"Sort by phone",Toast.LENGTH_SHORT).show();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = new MenuInflater(this);
+        inflater.inflate(R.menu.optionmenu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 }

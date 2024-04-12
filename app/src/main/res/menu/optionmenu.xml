@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/mnuSortTitle"
+        android:title="Sort by Title" />
+    <item
+        android:id="@+id/mnuSortDate"
+        android:title="Sort by Date" />
+</menu>
