@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
         mic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                displaySpeechRecognizer();
             }
         });
         inputSearch.addTextChangedListener(new TextWatcher() {
