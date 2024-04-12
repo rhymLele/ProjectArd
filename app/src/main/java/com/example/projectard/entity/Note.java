@@ -1,9 +1,12 @@
 package com.example.projectard.entity;
 
+import android.net.Uri;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverter;
 
 import java.io.Serializable;
 
@@ -20,6 +23,7 @@ public class Note implements Serializable {
     private String subtitle;
     @ColumnInfo(name="note_Text")
     private String noteText;
+
     @ColumnInfo(name="image_Path")
     private String imagePath;
     @ColumnInfo(name="color")
