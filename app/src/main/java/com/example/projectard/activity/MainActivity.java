@@ -2,6 +2,7 @@ package com.example.projectard.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import com.example.projectard.adapters.NoteAdapter;
 import com.example.projectard.database.NoteDatabases;
 import com.example.projectard.entity.Note;
 import com.example.projectard.listeners.NoteListener;
+import com.example.projectard.receiver.ConnectionReceiver;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import java.util.ArrayList;
@@ -51,8 +53,9 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
     private List<Note> noteList;
     private NoteAdapter noteAdapter;
     private int noteClickedPosition=-1;
-
-
+    ConnectionReceiver receiver;
+    IntentFilter intentFilter;
+    EditText inputSearch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,11 +63,41 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
         Log.d("Create","okls");
         initUI();
         HanldeCLick();
-
+        receiver = new ConnectionReceiver();
+        intentFilter = new IntentFilter("com.example.listview2023.SOME_ACTION");
+        intentFilter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+        registerReceiver(receiver, intentFilter);
 //        if(noteAdapter.getItemCount()==0)
         getNote(REQUEST_CODE_SHOW_NOTE, false);
 
-        EditText inputSearch = findViewById(R.id.inputSearch);
+
+
+
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(receiver, intentFilter);
+        Log.d("resume","ere");
+//        getNote(REQUEST_CODE_SHOW_NOTE);
+
+    }
+
+    private void HanldeCLick() {
+        imageAddNoteMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_ADD_NOTE);
+            }
+        });
         inputSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -80,25 +113,6 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
                 if(noteList.size() != 0){
                     noteAdapter.searchNote(s.toString());
                 }
-            }
-        });
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d("resume","ere");
-//        getNote(REQUEST_CODE_SHOW_NOTE);
-
-    }
-
-    private void HanldeCLick() {
-        imageAddNoteMain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
-                startActivityForResult(intent, REQUEST_CODE_ADD_NOTE);
             }
         });
     }
@@ -140,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
         new GetNoteTask().execute();
     }
     private void initUI() {
+        inputSearch = findViewById(R.id.inputSearch);
         imageAddNoteMain=findViewById(R.id.imageAddNoteMain);
         noteRecyclerView=findViewById(R.id.noteRecyclerView);
         noteRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
