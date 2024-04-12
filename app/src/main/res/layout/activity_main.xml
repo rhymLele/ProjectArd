@@ -73,31 +73,6 @@
         android:orientation="horizontal"
         android:padding="@dimen/_15sdp"
         app:layout_constraintBottom_toBottomOf="parent">
-
-        <ImageView
-            android:id="@+id/imageAddNote"
-            android:layout_width="@dimen/_23sdp"
-            android:layout_height="@dimen/_23sdp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_add_outline"
-            android:layout_marginStart="@dimen/_12sdp"
-            app:tint="@color/colorIcon"/>
-        <ImageView
-            android:id="@+id/imageAddImage"
-            android:layout_width="@dimen/_23sdp"
-            android:layout_height="@dimen/_23sdp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_image"
-            android:layout_marginStart="@dimen/_12sdp"
-            app:tint="@color/colorIcon"/>
-        <ImageView
-            android:id="@+id/imageAddWebLink"
-            android:layout_width="@dimen/_23sdp"
-            android:layout_height="@dimen/_23sdp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_web_link"
-            android:layout_marginStart="@dimen/_12sdp"
-            app:tint="@color/colorIcon"/>
     </LinearLayout>
     <ImageView
         android:id="@+id/imageAddNoteMain"

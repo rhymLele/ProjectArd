@@ -72,9 +72,6 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
 //        if(noteAdapter.getItemCount()==0)
         getNote(REQUEST_CODE_SHOW_NOTE, false);
 
-
-
-
     }
     @Override
     protected void onDestroy() {

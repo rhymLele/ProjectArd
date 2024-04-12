@@ -1,6 +1,7 @@
 package com.example.projectard.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -13,6 +14,7 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -42,7 +44,7 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class CreateNoteActivity extends AppCompatActivity {
-    private ImageView imageBack,imageSave,imageNote;
+    private ImageView imageBack,imageSave,imageNote, imageMenu;
     private EditText inputNoteTitle,inputNoteSubTitle,inputNoteText;
     private TextView textDateTime,textWebURL;
     LinearLayout layoutWebURL;
@@ -75,6 +77,8 @@ public class CreateNoteActivity extends AppCompatActivity {
         selectedNoteColor = "#333333";
         initMiscellaneous();
         setSubtitleIndicatorColor();
+
+
     }
 
     private void setViewOrUpdateNote() {
@@ -104,9 +108,34 @@ public class CreateNoteActivity extends AppCompatActivity {
                 SaveNote();
             }
         });
+        imageMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final LinearLayout layoutMiscellaneous = findViewById(R.id.layoutMiscellaneous);
+                final BottomSheetBehavior<LinearLayout> bottomSBH = BottomSheetBehavior.from(layoutMiscellaneous);
+                hideKeyboard();
+                if(bottomSBH.getState() != BottomSheetBehavior.STATE_EXPANDED){
+                    bottomSBH.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }else{
+                    bottomSBH.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
+                }
+        });
     }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            View currentFocus = getCurrentFocus();
+            if (currentFocus != null) {
+                imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+            }
+        }
+    }
+
     private void initUI() {
         imageBack=findViewById(R.id.imageBack);
+        imageMenu = findViewById(R.id.imageMenu);
         inputNoteTitle=findViewById(R.id.inputNoteTitle);
         inputNoteText=findViewById(R.id.inputNote);
         inputNoteSubTitle=findViewById(R.id.inputNoteSubTitle);
@@ -204,6 +233,13 @@ public class CreateNoteActivity extends AppCompatActivity {
             }
         }
     });
+
+    public void addImage(){
+        launcher.launch(new PickVisualMediaRequest.Builder()
+                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                .build());
+    }
+
     private void initMiscellaneous(){
         final LinearLayout layoutMiscellaneous = findViewById(R.id.layoutMiscellaneous);
         final BottomSheetBehavior<LinearLayout> bottomSBH = BottomSheetBehavior.from(layoutMiscellaneous);
@@ -279,7 +315,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         layoutMiscellaneous.findViewById(R.id.ViewColor5).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedNoteColor = "#000000";
+                selectedNoteColor = "#328536";
                 imgV1.setImageResource(0);
                 imgV2.setImageResource(0);
                 imgV3.setImageResource(0);
@@ -291,9 +327,8 @@ public class CreateNoteActivity extends AppCompatActivity {
         layoutMiscellaneous.findViewById(R.id.layoutAddImage).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launcher.launch(new PickVisualMediaRequest.Builder()
-                        .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
-                        .build());
+                bottomSBH.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                addImage();
             }
         });
         layoutMiscellaneous.findViewById(R.id.layoutAddUrl).setOnClickListener(new View.OnClickListener() {

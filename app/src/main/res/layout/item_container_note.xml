@@ -37,7 +37,7 @@
         android:layout_marginBottom="@dimen/_4sdp"
         android:fontFamily="@font/uregular"
         android:includeFontPadding="false"
-        android:textColor="@color/colorTextSubtitle"
+        android:textColor="@color/white"
         android:textSize="@dimen/_12ssp"/>
     <TextView
         android:id="@+id/item_textDateTime"
@@ -48,7 +48,7 @@
         android:layout_marginBottom="@dimen/_4sdp"
         android:fontFamily="@font/uregular"
         android:includeFontPadding="false"
-        android:textColor="@color/colorTextSubtitle"
+        android:textColor="@color/white"
         android:textSize="@dimen/_7ssp"/>
 
 </LinearLayout>
