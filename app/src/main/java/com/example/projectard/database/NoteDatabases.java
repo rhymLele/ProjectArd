@@ -15,9 +15,17 @@ import com.example.projectard.entity.Note;
 public abstract class NoteDatabases extends RoomDatabase {
 
     private static NoteDatabases noteDatabases;
+//    public static final Migration MIGRATION_1_2 = new Migration(1, 2) {
+//        @Override
+//        public void migrate(SupportSQLiteDatabase database) {
+//            // Thêm cột reminder vào bảng notes
+//            database.execSQL("ALTER TABLE notes ADD COLUMN reminder TEXT");
+//        }
+//    };
     public static synchronized NoteDatabases getNoteDatabases(Context context){
         if(noteDatabases==null){
             noteDatabases= Room.databaseBuilder(context,NoteDatabases.class,"notes_db").build();
+            //noteDatabases= Room.databaseBuilder(context,NoteDatabases.class,"notes_db").addMigrations(NoteDatabases.MIGRATION_1_2).build();
         }return noteDatabases;
     }
     public abstract NoteDao noteDao();
