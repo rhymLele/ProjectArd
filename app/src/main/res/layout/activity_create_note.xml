@@ -154,7 +154,35 @@
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/_13ssp"/>
             </LinearLayout>
-
+            <LinearLayout
+                android:id="@+id/layoutDateReminder"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@id/layoutWebURLL"
+                >
+                <TextView
+                    android:id="@+id/textDateReminder"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/uregular"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/_13ssp"/>
+                <ImageView
+                    android:id="@+id/deleteReminder"
+                    android:layout_width="@dimen/_22sdp"
+                    android:layout_height="@dimen/_22sdp"
+                    android:src="@drawable/ic_delete"
+                    app:tint="@color/colorDelete"
+                    />
+            </LinearLayout>
             <EditText
                 android:id="@+id/inputNote"
                 android:layout_width="match_parent"
@@ -175,7 +203,7 @@
                 android:textColorHint="@color/colorTextHint"
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layoutWebURLL"
+                app:layout_constraintTop_toBottomOf="@id/layoutDateReminder"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
