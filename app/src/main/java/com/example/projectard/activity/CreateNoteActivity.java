@@ -99,10 +99,16 @@ public class CreateNoteActivity extends AppCompatActivity {
         if(alreadyAvailableNote.getImagePath()!=null){
             imageNote.setImageURI(Uri.parse(alreadyAvailableNote.getImagePath()));
             imageNote.setVisibility(View.VISIBLE);
-        }if(layoutWebURL.getVisibility()==View.VISIBLE){
+        }
+//        if(layoutWebURL.getVisibility()==View.VISIBLE){
+//            textWebURL.setText(alreadyAvailableNote.getWebLink());
+//        }
+        if(alreadyAvailableNote.getWebLink()!=null){
+            layoutWebURL.setVisibility(View.VISIBLE);
             textWebURL.setText(alreadyAvailableNote.getWebLink());
         }
-        if(layoutReminder.getVisibility()==View.VISIBLE){
+        if(alreadyAvailableNote.getReminder()!=null){
+            layoutReminder.setVisibility(View.VISIBLE);
             textReminder.setText(alreadyAvailableNote.getReminder());
             Log.d("ReminderDate", "Saved Date: " + textReminder.getText().toString());
         }
@@ -208,7 +214,7 @@ public class CreateNoteActivity extends AppCompatActivity {
             note.setReminder(textReminder.getText().toString());
             Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
             intent.setAction("MyAction");
-            intent.putExtra("time", sngay + sthang + snam);
+            intent.putExtra("time", sngay +"/"+ sthang +"/"+ snam);
             if(inputNoteTitle.getText()!=null)
             {
                 intent.putExtra("title",note.getTitle());

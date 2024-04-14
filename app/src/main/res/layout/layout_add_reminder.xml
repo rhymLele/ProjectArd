@@ -40,9 +40,10 @@
 
     <DatePicker
         android:id="@+id/dateee"
-        android:layout_width="310dp"
-        android:layout_height="401dp"
+        android:layout_width="324dp"
+        android:layout_height="435dp"
         android:layout_marginTop="20dp"
+        android:headerBackground="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
@@ -62,14 +63,14 @@
         android:textSize="@dimen/_13ssp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/datePicker" />
+        app:layout_constraintTop_toBottomOf="@+id/dateee" />
 
     <TextView
         android:id="@+id/textCancelDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginBottom="@dimen/_8sdp"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="16dp"
         android:fontFamily="@font/umedium"
         android:includeFontPadding="false"
         android:padding="@dimen/_8sdp"
@@ -78,7 +79,7 @@
         android:textSize="@dimen/_13ssp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/datePicker" />
+        app:layout_constraintTop_toBottomOf="@+id/dateee" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
