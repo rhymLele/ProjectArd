@@ -74,12 +74,12 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
         Log.d("Create","okls");
         initUI();
         HanldeCLick();
-        receiver = new ConnectionReceiver();
-        intentFilter = new IntentFilter("com.example.listview2023.SOME_ACTION");
-        intentFilter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
-        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-//        intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
-        registerReceiver(receiver, intentFilter);
+//        receiver = new ConnectionReceiver();
+//        intentFilter = new IntentFilter("com.example.listview2023.SOME_ACTION");
+//        intentFilter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+//        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+////        intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+//        registerReceiver(receiver, intentFilter);
 //        if(noteAdapter.getItemCount()==0)
         getNote(REQUEST_CODE_SHOW_NOTE, false);
 
@@ -87,12 +87,12 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(receiver);
+//        unregisterReceiver(receiver);
     }
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(receiver, intentFilter);
+//        registerReceiver(receiver, intentFilter);
         Log.d("resume","ere");
 //        getNote(REQUEST_CODE_SHOW_NOTE);
 

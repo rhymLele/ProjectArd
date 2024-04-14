@@ -28,6 +28,16 @@ public class Note implements Serializable {
     private String imagePath;
     @ColumnInfo(name="color")
     private String color;
+    @ColumnInfo(name="reminder")
+    private String Reminder;
+
+    public String getReminder() {
+        return Reminder;
+    }
+
+    public void setReminder(String reminder) {
+        Reminder = reminder;
+    }
 
     @NonNull
     @Override

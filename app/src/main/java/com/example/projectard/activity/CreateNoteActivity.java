@@ -1,7 +1,10 @@
 package com.example.projectard.activity;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -10,11 +13,13 @@ import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,26 +41,32 @@ import com.bumptech.glide.Glide;
 import com.example.projectard.R;
 import com.example.projectard.database.NoteDatabases;
 import com.example.projectard.entity.Note;
+import com.example.projectard.receiver.AlarmReceiver;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class CreateNoteActivity extends AppCompatActivity {
-    private ImageView imageBack,imageSave,imageNote, imageMenu;
+    private ImageView imageBack,imageSave,imageNote, imageMenu,imgReDe,imageShrede;
     private EditText inputNoteTitle,inputNoteSubTitle,inputNoteText;
-    private TextView textDateTime,textWebURL;
-    LinearLayout layoutWebURL;
+    private TextView textDateTime,textWebURL,textReminder;
+    LinearLayout layoutWebURL,layoutReminder;
     private Note alreadyAvailableNote;
 
     private View viewSubtitleIndicator;
     private String selectedNoteColor;
     private  Uri imageUri;
     private String SelectedImagePath;
-    private AlertDialog dialogAddUrl;
+    private AlertDialog dialogAddUrl,dialogAddReminder;
     private AlertDialog dialogDeleteNote;
+    String sngay,sthang,snam;
+    AlarmManager alarmManager;
+    PendingIntent pendingIntent;
+    Calendar cale;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,8 +100,19 @@ public class CreateNoteActivity extends AppCompatActivity {
         if(alreadyAvailableNote.getImagePath()!=null){
             imageNote.setImageURI(Uri.parse(alreadyAvailableNote.getImagePath()));
             imageNote.setVisibility(View.VISIBLE);
-        }if(layoutWebURL.getVisibility()==View.VISIBLE){
+            imageUri=Uri.parse(alreadyAvailableNote.getImagePath());
+        }
+//        if(layoutWebURL.getVisibility()==View.VISIBLE){
+//            textWebURL.setText(alreadyAvailableNote.getWebLink());
+//        }
+        if(alreadyAvailableNote.getWebLink()!=null){
+            layoutWebURL.setVisibility(View.VISIBLE);
             textWebURL.setText(alreadyAvailableNote.getWebLink());
+        }
+        if(alreadyAvailableNote.getReminder()!=null){
+            layoutReminder.setVisibility(View.VISIBLE);
+            textReminder.setText(alreadyAvailableNote.getReminder());
+            Log.d("ReminderDate", "Saved Date: " + textReminder.getText().toString());
         }
     }
 
@@ -121,6 +143,81 @@ public class CreateNoteActivity extends AppCompatActivity {
                 }
                 }
         });
+        textReminder.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+               showAddReminder();
+                return true;
+            }
+        });
+       imgReDe.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               textReminder.setText("");
+               layoutReminder.setVisibility(View.GONE);
+           }
+       });
+        imageShrede.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CreateNoteActivity.this);
+                builder.setTitle("Chọn loại chia sẻ")
+                        .setItems(new CharSequence[]{"Share note as image", "Share note as text"}, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which) {
+                                    case 0:
+                                        shareImage();
+                                        dialog.dismiss();
+                                        break;
+                                    case 1:
+                                        shareText();
+                                        dialog.dismiss();
+                                        break;
+                                }
+                            }
+                        })
+                        .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                // Hiển thị dialog
+                builder.show();
+            }
+        });
+    }
+
+    private void shareText() {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        if (inputNoteTitle.getText() != null && !inputNoteTitle.getText().toString().isEmpty()) {
+            sendIntent.putExtra(Intent.EXTRA_TEXT, inputNoteTitle.getText().toString());
+            sendIntent.setType("text/plain");
+
+            Intent shareIntent = Intent.createChooser(sendIntent, null);
+            startActivity(shareIntent);
+        } else {
+            // Hiển thị thông báo nếu title rỗng
+            Toast.makeText(this, "Please enter content to share", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void shareImage() {
+        if (imageUri != null) {
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
+            shareIntent.setType("image/jpeg");
+
+            Intent chooserIntent = Intent.createChooser(shareIntent, null);
+            startActivity(chooserIntent);
+        } else {
+            // Hiển thị thông báo nếu không có ảnh
+            Toast.makeText(this, "Please select a photo to share", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void hideKeyboard() {
@@ -145,7 +242,11 @@ public class CreateNoteActivity extends AppCompatActivity {
         imageSave=findViewById(R.id.imageSave);
         imageNote=findViewById(R.id.imageNoteee);
         textWebURL=findViewById(R.id.textWebURL);
+        imgReDe=findViewById(R.id.deleteReminder);
+        textReminder=findViewById(R.id.textDateReminder);
         layoutWebURL=findViewById(R.id.layoutWebURLL);
+        layoutReminder=findViewById(R.id.layoutDateReminder);
+        imageShrede=findViewById(R.id.imageShare);
 
     }
     private void SaveNote(){
@@ -171,6 +272,21 @@ public class CreateNoteActivity extends AppCompatActivity {
         note.setColor(selectedNoteColor);
         if(layoutWebURL.getVisibility()==View.VISIBLE){
             note.setWebLink(textWebURL.getText().toString());
+        }
+
+        if(layoutReminder.getVisibility()==View.VISIBLE){
+            note.setReminder(textReminder.getText().toString());
+            Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+            intent.setAction("MyAction");
+            intent.putExtra("time", sngay +"/"+ sthang +"/"+ snam);
+            if(inputNoteTitle.getText()!=null)
+            {
+                intent.putExtra("title",note.getTitle());
+            }
+            Log.d("ReminderDate", "Saved Date: " + textReminder.getText().toString());
+            alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            pendingIntent = PendingIntent.getBroadcast(CreateNoteActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, cale.getTimeInMillis(), pendingIntent);
         }
         @SuppressLint("StaticFieldLeak")
         class SaveNoteTask extends AsyncTask<Void,Void,Void>{
@@ -338,6 +454,13 @@ public class CreateNoteActivity extends AppCompatActivity {
                showAddUrlDialog();
             }
         });
+        layoutMiscellaneous.findViewById(R.id.layoutAddReminder).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSBH.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                showAddReminder();
+            }
+        });
 
         if(alreadyAvailableNote != null){
             layoutMiscellaneous.findViewById(R.id.layoutDeleteNote).setVisibility(View.VISIBLE);
@@ -439,5 +562,58 @@ public class CreateNoteActivity extends AppCompatActivity {
                 }
             });
         }dialogAddUrl.show();
+    }
+    private void showAddReminder() {
+        if (dialogAddReminder == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(CreateNoteActivity.this);
+            View view = LayoutInflater.from(this).inflate(R.layout.layout_add_reminder, (ViewGroup) findViewById(R.id.layoutAddReminderContainer));
+            builder.setView(view);
+            dialogAddReminder = builder.create();
+
+            if (dialogAddReminder.getWindow() != null) {
+                dialogAddReminder.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+            }
+
+            final DatePicker inputDate = view.findViewById(R.id.dateee);
+            inputDate.requestFocus();
+
+            view.findViewById(R.id.textAddDate).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(System.currentTimeMillis());
+                    calendar.set(Calendar.YEAR, inputDate.getYear());
+                    calendar.set(Calendar.MONTH, inputDate.getMonth());
+                    calendar.set(Calendar.DAY_OF_MONTH, inputDate.getDayOfMonth());
+                    cale=calendar;
+                    int ngay = inputDate.getDayOfMonth();
+                    int thang = inputDate.getMonth()+1;
+                    int nam = inputDate.getYear();
+
+                    sngay = String.valueOf(ngay);
+                    sthang = String.valueOf(thang);
+                    snam = String.valueOf(nam);
+
+
+
+                    textReminder.setText(inputDate.getDayOfMonth() + "/" + (inputDate.getMonth() + 1) + "/" + inputDate.getYear());
+                    layoutReminder.setVisibility(View.VISIBLE);
+                    Log.d("Notification","savedss");
+                    dialogAddReminder.dismiss();
+                }
+            });
+
+            view.findViewById(R.id.textCancelDate).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (pendingIntent != null) {
+                        alarmManager.cancel(pendingIntent);
+                        pendingIntent.cancel();
+                    }
+                    dialogAddReminder.dismiss();
+                }
+            });
+        }
+        dialogAddReminder.show();
     }
 }
