@@ -161,7 +161,7 @@ public class CreateNoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(CreateNoteActivity.this);
-                builder.setTitle("Chọn loại chia sẻ")
+                builder.setTitle("Share")
                         .setItems(new CharSequence[]{"Share note as image", "Share note as text"}, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
