@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -50,7 +51,7 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class CreateNoteActivity extends AppCompatActivity {
-    private ImageView imageBack,imageSave,imageNote, imageMenu,imgReDe;
+    private ImageView imageBack,imageSave,imageNote, imageMenu,imgReDe,imageShrede;
     private EditText inputNoteTitle,inputNoteSubTitle,inputNoteText;
     private TextView textDateTime,textWebURL,textReminder;
     LinearLayout layoutWebURL,layoutReminder;
@@ -99,6 +100,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         if(alreadyAvailableNote.getImagePath()!=null){
             imageNote.setImageURI(Uri.parse(alreadyAvailableNote.getImagePath()));
             imageNote.setVisibility(View.VISIBLE);
+            imageUri=Uri.parse(alreadyAvailableNote.getImagePath());
         }
 //        if(layoutWebURL.getVisibility()==View.VISIBLE){
 //            textWebURL.setText(alreadyAvailableNote.getWebLink());
@@ -155,6 +157,67 @@ public class CreateNoteActivity extends AppCompatActivity {
                layoutReminder.setVisibility(View.GONE);
            }
        });
+        imageShrede.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CreateNoteActivity.this);
+                builder.setTitle("Chọn loại chia sẻ")
+                        .setItems(new CharSequence[]{"Share note as image", "Share note as text"}, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which) {
+                                    case 0:
+                                        shareImage();
+                                        dialog.dismiss();
+                                        break;
+                                    case 1:
+                                        shareText();
+                                        dialog.dismiss();
+                                        break;
+                                }
+                            }
+                        })
+                        .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                // Hiển thị dialog
+                builder.show();
+            }
+        });
+    }
+
+    private void shareText() {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        if (inputNoteTitle.getText() != null && !inputNoteTitle.getText().toString().isEmpty()) {
+            sendIntent.putExtra(Intent.EXTRA_TEXT, inputNoteTitle.getText().toString());
+            sendIntent.setType("text/plain");
+
+            Intent shareIntent = Intent.createChooser(sendIntent, null);
+            startActivity(shareIntent);
+        } else {
+            // Hiển thị thông báo nếu title rỗng
+            Toast.makeText(this, "Please enter content to share", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void shareImage() {
+        if (imageUri != null) {
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
+            shareIntent.setType("image/jpeg");
+
+            Intent chooserIntent = Intent.createChooser(shareIntent, null);
+            startActivity(chooserIntent);
+        } else {
+            // Hiển thị thông báo nếu không có ảnh
+            Toast.makeText(this, "Please select a photo to share", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void hideKeyboard() {
@@ -183,6 +246,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         textReminder=findViewById(R.id.textDateReminder);
         layoutWebURL=findViewById(R.id.layoutWebURLL);
         layoutReminder=findViewById(R.id.layoutDateReminder);
+        imageShrede=findViewById(R.id.imageShare);
 
     }
     private void SaveNote(){

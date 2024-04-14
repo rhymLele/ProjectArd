@@ -58,13 +58,27 @@
                 app:layout_constraintTop_toTopOf="@id/imageBack"
                 />
 
+            <ImageView
+                android:id="@+id/imageShare"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginEnd="12dp"
+                android:contentDescription="@string/app_name"
+                android:padding="@dimen/_4sdp"
+                android:src="@drawable/ic_share"
+                app:layout_constraintBottom_toBottomOf="@id/imageBack"
+                app:layout_constraintEnd_toStartOf="@+id/imageMenu"
+                app:layout_constraintTop_toTopOf="@id/imageBack"
+                app:layout_constraintVertical_bias="0.0"
+                app:tint="@color/colorDefaultNoteColor" />
+
             <EditText
                 android:id="@+id/inputNoteTitle"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@null"
                 android:fontFamily="@font/ubold"
-                android:hint="Note Title"
+                android:hint="Title"
                 android:imeOptions="actionDone"
                 android:importantForAutofill="no"
                 android:includeFontPadding="false"
@@ -104,7 +118,7 @@
                 android:textColor="@color/colorTextSubtitle"
                 android:textColorHint="@color/colorTextHint"
                 android:textSize="@dimen/_13ssp"
-                android:hint="Note Subtitle"
+                android:hint="Subtitle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/viewSubtitleIndicator"
 
@@ -165,7 +179,7 @@
                 android:orientation="horizontal"
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/layoutWebURLL"
-                >
+                tools:ignore="UseCompoundDrawables">
                 <TextView
                     android:id="@+id/textDateReminder"
                     android:layout_width="0dp"
@@ -194,7 +208,7 @@
                 android:background="@null"
                 android:fontFamily="@font/uregular"
                 android:gravity="top"
-                android:hint="Type.."
+                android:hint="Starting Type.."
                 android:importantForAutofill="no"
                 android:includeFontPadding="false"
                 android:inputType="textMultiLine"
