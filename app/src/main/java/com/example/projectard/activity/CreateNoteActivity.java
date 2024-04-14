@@ -44,6 +44,7 @@ import com.example.projectard.entity.Note;
 import com.example.projectard.receiver.AlarmReceiver;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -277,6 +278,32 @@ public class CreateNoteActivity extends AppCompatActivity {
         if(layoutReminder.getVisibility()==View.VISIBLE){
             note.setReminder(textReminder.getText().toString());
             Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+
+            String dateStr = textReminder.getText().toString();
+
+            // Phân tích chuỗi ngày/tháng/năm
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            Calendar cale = Calendar.getInstance();
+            try {
+                Date date = sdf.parse(dateStr);
+
+                if (date != null) {
+                    cale.setTime(date);
+
+                    // Lấy ngày, tháng, năm từ Calendar
+                    int day = cale.get(Calendar.DAY_OF_MONTH);
+                    int month = cale.get(Calendar.MONTH) + 1;  
+                    int year = cale.get(Calendar.YEAR);
+                    sngay = String.valueOf(day);
+                    sthang = String.valueOf(month);
+                    snam = String.valueOf(year);
+                }
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Lỗi khi phân tích ngày", Toast.LENGTH_SHORT).show();
+                return; // thoát khỏi phương thức nếu có lỗi
+            }
             intent.setAction("MyAction");
             intent.putExtra("time", sngay +"/"+ sthang +"/"+ snam);
             if(inputNoteTitle.getText()!=null)
