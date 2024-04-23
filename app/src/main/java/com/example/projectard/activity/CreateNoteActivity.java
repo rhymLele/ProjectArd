@@ -342,7 +342,7 @@ public class CreateNoteActivity extends AppCompatActivity {
             public boolean onLongClick(View v) {
                 textWebURL.setText("");
                 layoutWebURL.setVisibility(View.GONE);
-                return false;
+                return true;
             }
         });
         imageNote.setOnLongClickListener(new View.OnLongClickListener() {
@@ -351,7 +351,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                 imageUri=null;
                 imageNote.setImageURI(null);
                 imageNote.setVisibility(View.GONE);
-                return false;
+                return true;
             }
         });
     }
