@@ -103,9 +103,6 @@ public class CreateNoteActivity extends AppCompatActivity {
             imageNote.setVisibility(View.VISIBLE);
             imageUri=Uri.parse(alreadyAvailableNote.getImagePath());
         }
-//        if(layoutWebURL.getVisibility()==View.VISIBLE){
-//            textWebURL.setText(alreadyAvailableNote.getWebLink());
-//        }
         if(alreadyAvailableNote.getWebLink()!=null){
             layoutWebURL.setVisibility(View.VISIBLE);
             textWebURL.setText(alreadyAvailableNote.getWebLink());

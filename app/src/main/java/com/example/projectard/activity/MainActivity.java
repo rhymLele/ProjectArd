@@ -74,13 +74,6 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
         Log.d("Create","okls");
         initUI();
         HanldeCLick();
-//        receiver = new ConnectionReceiver();
-//        intentFilter = new IntentFilter("com.example.listview2023.SOME_ACTION");
-//        intentFilter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
-//        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-////        intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
-//        registerReceiver(receiver, intentFilter);
-//        if(noteAdapter.getItemCount()==0)
         getNote(REQUEST_CODE_SHOW_NOTE, false);
 
     }
@@ -194,10 +187,10 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode ==REQUEST_CODE_ADD_NOTE && resultCode==RESULT_OK)
+        if(requestCode ==REQUEST_CODE_ADD_NOTE && resultCode==RESULT_OK)
         {
             getNote(REQUEST_CODE_ADD_NOTE, false);
-        }else if(resultCode ==REQUEST_CODE_UPDATE_NOTE && resultCode==RESULT_OK)
+        }else if(requestCode ==REQUEST_CODE_UPDATE_NOTE && resultCode==RESULT_OK)
         {
            if(data!=null)
            {
@@ -208,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
             List<String> results = data.getStringArrayListExtra(
                     RecognizerIntent.EXTRA_RESULTS);
             String spokenText = results.get(0);
-            Log.d("fuckj","fk");
+            Log.d("shazama","fak");
             inputSearch.setText(spokenText);
         }
     }
@@ -220,7 +213,11 @@ public class MainActivity extends AppCompatActivity implements NoteListener {
         intent.putExtra("isViewOrUpdate",true);
         intent.putExtra("note",note);
         startActivityForResult(intent,REQUEST_CODE_UPDATE_NOTE);
-    } public static void sort_type(List<Note> list,int option) {
+    }
+
+
+    //sap xep
+    public static void sort_type(List<Note> list,int option) {
 
         if(option==1)
         {
